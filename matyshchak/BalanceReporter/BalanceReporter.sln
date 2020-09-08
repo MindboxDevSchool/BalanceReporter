@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BalanceReporter", "BalanceReporter\BalanceReporter.csproj", "{06984BC0-147E-44F4-BBD8-701D4C82E727}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{06984BC0-147E-44F4-BBD8-701D4C82E727}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06984BC0-147E-44F4-BBD8-701D4C82E727}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06984BC0-147E-44F4-BBD8-701D4C82E727}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06984BC0-147E-44F4-BBD8-701D4C82E727}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
