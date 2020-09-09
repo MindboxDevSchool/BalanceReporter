@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BalanceReporter", "BalanceReporter\BalanceReporter.csproj", "{61010CF8-DEB7-4032-91E7-696DC61A8180}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BalanceReporterTests", "BalanceReporterTests\BalanceReporterTests.csproj", "{62ADA239-ED5B-4EE0-AB11-E8F150CA1ADB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{61010CF8-DEB7-4032-91E7-696DC61A8180}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61010CF8-DEB7-4032-91E7-696DC61A8180}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61010CF8-DEB7-4032-91E7-696DC61A8180}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61010CF8-DEB7-4032-91E7-696DC61A8180}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62ADA239-ED5B-4EE0-AB11-E8F150CA1ADB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62ADA239-ED5B-4EE0-AB11-E8F150CA1ADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62ADA239-ED5B-4EE0-AB11-E8F150CA1ADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62ADA239-ED5B-4EE0-AB11-E8F150CA1ADB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
