@@ -18,14 +18,14 @@ namespace BalanceReporter
             Console.WriteLine("Monthly transactions");
             foreach (var tr in res)
             {
-                Console.WriteLine("date: {0, 14:d} Company: {1, 10}, Sum: {2, 7}", tr.Date, tr.Sender, tr.Amount);
+                Console.WriteLine("date: {0} Company: {1}, Sum: {2}", tr.Date, tr.Sender, tr.Amount);
             }
             
             var res2 = account.TransactionsPerYear(2020);
             Console.WriteLine("Yearly transactions");
             foreach (var tr in res2)
             {
-                Console.WriteLine("date: {0, 14:d} Company: {1, 10}, Sum: {2, 7}", tr.Date, tr.Sender, tr.Amount);
+                Console.WriteLine("date: {0} Company: {1}, Sum: {2}", tr.Date, tr.Sender, tr.Amount);
             }
             Console.WriteLine(account.AverageIncome(new DateTime(2019, 3, 1), new DateTime(2019,5,31)));
             Console.WriteLine(account.AverageExpense(new DateTime(2019, 3, 1), new DateTime(2019,5,31)));
