@@ -4,16 +4,13 @@ using FileHelpers;
 namespace BalanceReporter
 {
     [DelimitedRecord(",")]
+    [IgnoreFirst()]
     public class Transaction
     {
         [FieldConverter(ConverterKind.Date, "yyyy-MM-dd")]
-        [FieldOrder(10)]
-        public DateTime Date;
+        public DateTime Date { get; private set; }
+        public String Sender { get; private set; }
 
-        [FieldOrder(20)]
-        public String Sender;
-        
-        [FieldOrder(30)]
-        public decimal Amount;
+        public int Amount { get; private set; }
     }
 }
