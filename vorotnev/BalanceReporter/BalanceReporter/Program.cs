@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace BalanceReporter
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -21,14 +21,14 @@ namespace BalanceReporter
             Output(moneyMovesByMonths, moneyMovesByYears, averageMoneyByMonths, averageMoneyByYears, maxMoneyByMonths);
         }
 
-        static void StartWarning()
+        public static void StartWarning()
         {
             Console.WriteLine("Поместите csv файл с входными данными в папку с программой под именем input.csv.");
             Console.WriteLine("Для продолжения нажмите Enter.");
             Console.ReadLine();
         }
         
-        static List<string[]> Parse()
+        public static List<string[]> Parse()
         {
             string path = @"input.csv";
             List<string[]> data = new List<string[]>();
@@ -51,7 +51,7 @@ namespace BalanceReporter
             return data;
         }
 
-        static List<string[]> ParseDate(List<string[]> data)
+        public static List<string[]> ParseDate(List<string[]> data)
         {
             List<string[]> result = new List<string[]>();
             foreach (var line in data)
@@ -64,7 +64,7 @@ namespace BalanceReporter
             return result;
         }
 
-        static List<string[]> MoneyMovesByMonths(List<string[]> parsedData)
+        public static List<string[]> MoneyMovesByMonths(List<string[]> parsedData)
         {
             var minimalDateTime = DateTime.MinValue;
             var minimalMonth = DateTime.MinValue.Month;
@@ -110,7 +110,7 @@ namespace BalanceReporter
             return moneyMoves;
         }
 
-        static List<string[]> MoneyMovesByYears(List<string[]> moneyMovesByMonths)
+        public static List<string[]> MoneyMovesByYears(List<string[]> moneyMovesByMonths)
         {
             List<string[]> moneyMoves = new List<string[]>();
             var lastYear = DateTime.MinValue.Year;
@@ -140,13 +140,15 @@ namespace BalanceReporter
             return moneyMoves;
         }
 
-        static List<string[]> AverageMoneyByMonths(List<string[]> parsedData)
+        public static List<string[]> AverageMoneyByMonths(List<string[]> parsedData)
         {
             var minimalDateTime = DateTime.MinValue;
             var minimalMonth = DateTime.MinValue.Month;
             var minimalYear = DateTime.MinValue.Year;
             var lastMonth = DateTime.MinValue.Month;
             var lastYear = DateTime.MinValue.Year;
+            var incomingPeriods = 0;
+            var outcomingPeriods = 0;
             List<string[]> averageMoneyByMonths = new List<string[]>();
             for (int i = 0; i < parsedData.Count; i++)
             {
@@ -173,16 +175,22 @@ namespace BalanceReporter
                             CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
                             Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
                             if (double.Parse(parsedData[j][2]) >= 0)
+                            {
                                 incoming += double.Parse(parsedData[j][2]);
+                                incomingPeriods++;
+                            }
+
                             if (double.Parse(parsedData[j][2]) < 0)
+                            {
                                 outcoming += double.Parse(parsedData[j][2]);
-                            // else outcoming += double.Parse(parsedData[j][2]);
+                                outcomingPeriods++;
+                            }
                                 Thread.CurrentThread.CurrentCulture = cultureInfo;
                         }
                     }
 
-                    incoming = incoming / parsedData.Count;
-                    outcoming = outcoming / parsedData.Count;
+                    incoming = incoming / incomingPeriods;
+                    outcoming = outcoming / outcomingPeriods;
                     string[] values = {Convert.ToString(currentMonth), Convert.ToString(currentYear), Convert.ToString(incoming), Convert.ToString(outcoming)};
                     averageMoneyByMonths.Add(values);
                 }
@@ -193,10 +201,12 @@ namespace BalanceReporter
             return averageMoneyByMonths;
         }
 
-        static List<string[]> AverageMoneyByYears(List<string[]> moneyMovesByMonths)
+        public static List<string[]> AverageMoneyByYears(List<string[]> moneyMovesByMonths)
         {
             List<string[]> averageMoneyByYears = new List<string[]>();
             var lastYear = DateTime.MinValue.Year;
+            var incomingPeriods = 0;
+            var outcomingPerionds = 0;
             for (int i = 0; i < moneyMovesByMonths.Count; i++)
             {
                 var currentYear = Convert.ToInt32(moneyMovesByMonths[i][1]);
@@ -212,14 +222,21 @@ namespace BalanceReporter
                         {
                             CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
                             if (double.Parse(moneyMovesByMonths[j][2], cultureInfo) >= 0)
+                            {
                                 incoming += double.Parse(moneyMovesByMonths[j][2], cultureInfo);
-                            else outcoming += double.Parse(moneyMovesByMonths[j][2], cultureInfo);
+                                incomingPeriods++;
+                            }
+                            else
+                            {
+                                outcoming += double.Parse(moneyMovesByMonths[j][2], cultureInfo);
+                                outcomingPerionds++;
+                            }
                         }
                         
                     }
                     lastYear = currentYear;
-                    incoming = incoming / moneyMovesByMonths.Count;
-                    outcoming = outcoming / moneyMovesByMonths.Count;
+                    incoming = incoming / incomingPeriods;
+                    outcoming = outcoming / outcomingPerionds;
                     string[] values = new[] {Convert.ToString(currentYear), Convert.ToString(incoming), Convert.ToString(outcoming)};
                     averageMoneyByYears.Add(values);
                 }
@@ -227,7 +244,7 @@ namespace BalanceReporter
             return averageMoneyByYears;
         }
 
-        static string[] MaxMoneyByMonths(List<string[]> parsedData)
+        public static string[] MaxMoneyByMonths(List<string[]> parsedData)
         {
             var minimalDateTime = DateTime.MinValue;
             var minimalMonth = DateTime.MinValue.Month;
@@ -286,7 +303,7 @@ namespace BalanceReporter
             return result;
         }
         
-        static void Output(
+        public static void Output(
             List<string[]> moneyMovesByMonths, 
             List<string[]> moneyMovesByYears, 
             List<string[]> averageMoneyByMonths,
