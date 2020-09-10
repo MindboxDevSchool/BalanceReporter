@@ -29,6 +29,20 @@ namespace BalanceReporter
                     t.Amount < 0);
         }
         
+        private Transaction MaxIncomeTransaction(DateTime from, DateTime to)
+        {
+            return IncomeTransactions(from, to)
+                .OrderByDescending(t => t.Amount)
+                .First();
+        }
+        
+        private Transaction MaxExpenseTransaction(DateTime from, DateTime to)
+        {
+            return ExpenseTransactions(from, to)
+                .OrderBy(t => t.Amount)
+                .First();
+        }
+        
         public double IntervalIncome(DateTime from, DateTime to)
         {
             return IncomeTransactions(from, to).Sum(t => t.Amount);
@@ -54,31 +68,28 @@ namespace BalanceReporter
 
         public double MaxIncome(DateTime from, DateTime to)
         {
-            return IncomeTransactions(from, to).Max(t => t.Amount);
+            return MaxIncomeTransaction(from, to).Amount;
         }
         
-
         public double MaxExpense(DateTime from, DateTime to)
         {
-            return ExpenseTransactions(from, to).Min(t => t.Amount);
+            return MaxExpenseTransaction(from, to).Amount;
+        }
+
+        public string MostIncomeTransactionPartner(DateTime from, DateTime to)
+        {
+            return IncomeTransactions(from, to)
+                .GroupBy(t => t.TransactionPartner)
+                .OrderByDescending(x => x.Sum(t => t.Amount))
+                .First().Key;
         }
         
-
-        public string BiggestAmountReceivedFrom(DateTime from, DateTime to)
+        public string MostExpenseTransactionPartner(DateTime from, DateTime to)
         {
-            return IncomeTransactions(from, to)  
-                .OrderByDescending(t => t.Amount)
-                .First()
-                .TransactionPartner;
-        }
-        
-
-        public string BiggestAmountSentTo(DateTime from, DateTime to)
-        {
-            return ExpenseTransactions(from, to)  
-                .OrderBy(t => t.Amount)
-                .First()
-                .TransactionPartner;
+            return ExpenseTransactions(from, to)
+                .GroupBy(t => t.TransactionPartner)
+                .OrderBy(x => x.Sum(t => t.Amount))
+                .First().Key;
         }
     }
 }
