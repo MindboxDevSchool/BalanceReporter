@@ -1,6 +1,6 @@
 ﻿namespace BalanceReporter
 {
-    class TransactionsStatistics
+    public class TransactionsStatistics
     {
         public string Account { get; set; }
         

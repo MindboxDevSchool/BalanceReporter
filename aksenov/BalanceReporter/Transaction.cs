@@ -2,7 +2,7 @@
 
 namespace BalanceReporter
 {
-    struct Transaction
+    public struct Transaction
     {
         public DateTime Date { get; set; }
 

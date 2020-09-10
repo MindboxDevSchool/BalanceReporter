@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BalanceReporter
 {
-    class TransactionProcessor
+    public class TransactionProcessor
     {
         public List<Transaction> Transactions { get; set; }
 
@@ -12,9 +13,17 @@ namespace BalanceReporter
             Transactions = transactions;
         }
 
-        public double[] CashFlowByMonth(int month)
+        public double[] CashFlowByMonth(int month, int year)
         {
-            throw new NotImplementedException();
+            double expense = 0;
+            double income = 0;
+
+            List<Transaction> transactionsSample = Transactions.Where(t => t.Date.Year == year && t.Date.Month == month).ToList();
+
+            income = transactionsSample.Where(t => t.Amount > 0).Sum(t => t.Amount);
+            expense = transactionsSample.Where(t => t.Amount < 0).Sum(t => t.Amount);
+            
+            return new double[] {income, expense};
         }
 
         public double[] CashFlowByYear(int year)

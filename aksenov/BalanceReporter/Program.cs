@@ -15,6 +15,9 @@ namespace BalanceReporter
             Console.WriteLine(transactions[0].Date + "   " + transactions[0].Account + "   " + transactions[0].Amount);
 
             TransactionProcessor transactionProcessor = new TransactionProcessor(transactions);
+
+            double[] cashFlowForAugust = transactionProcessor.CashFlowByMonth(8, 2018);
+            Console.WriteLine($"August, 2018. Income: {cashFlowForAugust[0]}. Expense: {cashFlowForAugust[1]}");
         }
 
         public static List<Transaction> GetTransactionsFromFile(string pathToCSVfile)
