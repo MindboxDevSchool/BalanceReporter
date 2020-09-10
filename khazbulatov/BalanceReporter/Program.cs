@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Linq;
+using System.Collections.Generic;
 using BalanceReporter.model;
 
 namespace BalanceReporter
@@ -16,64 +15,39 @@ namespace BalanceReporter
             string filename = Console.ReadLine();
             return path + filename;
         }
+        
+        public static IEnumerable<TransactionStats> GetMonthlyStats(StatsType statsType)
+        {
+            return Reporter.AggregateAmountByPeriod(statsType.Aggregator);
+        }
+        
+        public static void OutputMonthlyStats(StatsType statsType)
+        {
+            IEnumerable<TransactionStats> transactionStats = GetMonthlyStats(statsType);
+            foreach (TransactionStats stats in transactionStats)
+            {
+                Console.WriteLine($"{statsType.Label} {stats}");
+            }
+        }
 
-        public static void LoadFile()
+        public static void LoadData()
         {
             string filepath = InputFilepath(DataDirectoryPath);
             Reporter.LoadTransactions(filepath);
         }
-        
-        public static void OutputMonthlyTotals()
+
+        public static void AggregateData()
         {
-            IEnumerable transactionStats = Reporter.AggregateAmountByPeriod(txGroup =>
-                txGroup.Sum(tx => tx.Amount)
-            );
-            foreach (TransactionStats stats in transactionStats)
-            {
-                Console.WriteLine($"Total {stats}");
-            }
-        }
-        
-        public static void OutputMonthlyMeans()
-        {
-            IEnumerable transactionStats = Reporter.AggregateAmountByPeriod(txGroup => 
-                txGroup.Average(tx => tx.Amount)
-            );
-            foreach (TransactionStats stats in transactionStats)
-            {
-                Console.WriteLine($"Average {stats}");
-            }
-        }
-        
-        public static void OutputMonthlyMaxima()
-        {
-            IEnumerable transactionStats = Reporter.AggregateAmountByPeriod(txGroup => 
-                txGroup.Max(tx => tx.Amount)
-            );
-            foreach (TransactionStats stats in transactionStats)
-            {
-                Console.WriteLine($"Max {stats}");
-            }
-        }
-        
-        public static void OutputMonthlyCounts()
-        {
-            IEnumerable transactionStats = Reporter.AggregateAmountByPeriod(txGroup => 
-                txGroup.Count()
-            );
-            foreach (TransactionStats stats in transactionStats)
-            {
-                Console.WriteLine($"Times {stats}");
-            }
+            OutputMonthlyStats(StatsType.Total);
+            OutputMonthlyStats(StatsType.Average);
+            OutputMonthlyStats(StatsType.Maximum);
+            OutputMonthlyStats(StatsType.Count);
         }
 
         public static void Main(string[] args)
         {
-            LoadFile();
-            OutputMonthlyTotals();
-            OutputMonthlyMeans();
-            OutputMonthlyMaxima();
-            OutputMonthlyCounts();
+            LoadData();
+            AggregateData();
         }
     }
 }
