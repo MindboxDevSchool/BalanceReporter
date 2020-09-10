@@ -8,12 +8,9 @@ namespace BalanceReporter
     {
         static void Main(string[] args)
         {
+            
             string path = Directory.GetParent(Environment.CurrentDirectory).Parent?.Parent?.FullName + "\\myFile0.csv";
             Accounter account = new Accounter(path);
-            // foreach (var x in account._transactions)
-            // {
-            //     Console.WriteLine(x.Amount);
-            // }
             var res = account.TransactionsPerMonth(2019, 3);
             Console.WriteLine("Monthly transactions");
             foreach (var tr in res)

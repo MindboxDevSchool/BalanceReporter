@@ -10,7 +10,6 @@ namespace BalanceReporter
         [FieldConverter(ConverterKind.Date, "yyyy-MM-dd")]
         public DateTime Date { get; private set; }
         public String Sender { get; private set; }
-
         public int Amount { get; private set; }
     }
 }
