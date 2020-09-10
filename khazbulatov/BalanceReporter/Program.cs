@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
+using System.Collections;
+using System.Linq;
 using BalanceReporter.model;
 
 namespace BalanceReporter
@@ -8,39 +8,72 @@ namespace BalanceReporter
     public static class Program
     {
         private const string DataDirectoryPath = "data/";
+        private static readonly Reporter Reporter = new Reporter();
+
         public static string InputFilepath(string path)
         {
             Console.Write($"Input a filename: {path}");
             string filename = Console.ReadLine();
             return path + filename;
         }
-        
-        public static IEnumerable<Transaction> LoadTransactions(string filename,
-            char separator = ',', bool hasHeader = true)
+
+        public static void LoadFile()
         {
-            using StreamReader reader = new StreamReader(filename);
-            if (hasHeader)
+            string filepath = InputFilepath(DataDirectoryPath);
+            Reporter.LoadTransactions(filepath);
+        }
+        
+        public static void OutputMonthlyTotals()
+        {
+            IEnumerable transactionStats = Reporter.AggregateAmountByPeriod(txGroup =>
+                txGroup.Sum(tx => tx.Amount)
+            );
+            foreach (TransactionStats stats in transactionStats)
             {
-                reader.ReadLine();
+                Console.WriteLine($"Total {stats}");
             }
-            
-            List<Transaction> data = new List<Transaction>();
-            while (!reader.EndOfStream)
+        }
+        
+        public static void OutputMonthlyMeans()
+        {
+            IEnumerable transactionStats = Reporter.AggregateAmountByPeriod(txGroup => 
+                txGroup.Average(tx => tx.Amount)
+            );
+            foreach (TransactionStats stats in transactionStats)
             {
-                string line = reader.ReadLine();
-                data.Add(Transaction.Parse(line, separator));
+                Console.WriteLine($"Average {stats}");
             }
-            return data;
+        }
+        
+        public static void OutputMonthlyMaximums()
+        {
+            IEnumerable transactionStats = Reporter.AggregateAmountByPeriod(txGroup => 
+                txGroup.Max(tx => tx.Amount)
+            );
+            foreach (TransactionStats stats in transactionStats)
+            {
+                Console.WriteLine($"Max {stats}");
+            }
+        }
+        
+        public static void OutputMonthlyCounts()
+        {
+            IEnumerable transactionStats = Reporter.AggregateAmountByPeriod(txGroup => 
+                txGroup.Count()
+            );
+            foreach (TransactionStats stats in transactionStats)
+            {
+                Console.WriteLine($"Times {stats}");
+            }
         }
 
         public static void Main(string[] args)
         {
-            string filepath = InputFilepath(DataDirectoryPath);
-            IEnumerable<Transaction> transactions = LoadTransactions(filepath);
-            foreach (Transaction transaction in transactions)
-            {
-                Console.WriteLine(transaction);
-            }
+            LoadFile();
+            OutputMonthlyTotals();
+            OutputMonthlyMeans();
+            OutputMonthlyMaximums();
+            OutputMonthlyCounts();
         }
     }
 }

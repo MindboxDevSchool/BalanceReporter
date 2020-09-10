@@ -1,4 +1,3 @@
-using System.Linq;
 using NUnit.Framework;
 using BalanceReporter;
 
@@ -11,11 +10,12 @@ namespace BalanceReporterTests
         public void LoadTransactions_Loads10000Records()
         {
             // Arrange
+            Reporter reporter = new Reporter();
             string filepath = "data/tx00.csv";
             int expectedRecordCount = 10000;
 
             // Act
-            int actualRecordCount = Program.LoadTransactions(filepath).Count();
+            int actualRecordCount = reporter.LoadTransactions(filepath);
             
             // Assert
             Assert.AreEqual(expectedRecordCount, actualRecordCount);
