@@ -8,7 +8,7 @@ namespace BalanceReporterTests
     public class BalanceReporterTests
     {
         [Test]
-        public void LoadTransactions_Loads1000Records()
+        public void LoadTransactions_Loads10000Records()
         {
             // Arrange
             string filepath = "data/tx00.csv";
