@@ -47,24 +47,7 @@ namespace BalanceReporter
         
         public static IOrderedEnumerable<Transaction> GetCompanyNamyThatSpendsMostMoneyByYear
             (IEnumerable<BalanceReporterCsvParser> records)
-            => GetCompanyNamyThatSendsOrSpendMostMoneyByYear(records, g => g.SumTransaction < 0); 
-        private static IOrderedEnumerable<Transaction> GetCompanyNamyThatSendsOrSpendMostMoneyByYear
-            (IEnumerable<BalanceReporterCsvParser> records, Func<BalanceReporterCsvParser, bool> filter)
-        {
-            var t = records
-                .Where(filter)
-                .GroupBy(e => new { e.Date.Year, e.OrganizationTransaction })
-                .Select(e => 
-                    new Transaction()
-                    {
-                        Value = e.Sum(p => p.SumTransaction), 
-                        Year = e.Key.Year, 
-                        Organization = e.Key.OrganizationTransaction
-                    });
-           return t
-                .Where(e => e.Value == t.Where(f => f.Year == e.Year).Max(q => q.Value))
-                .OrderBy(e => e.Year);
-        }
+            => GetCompanyNamyThatSendsOrSpendMostMoneyByYear(records, g => g.SumTransaction < 0);
 
         public static IOrderedEnumerable<Transaction> GetCompanyNamyThatSendsMostMoneyByMonth
             (IEnumerable<BalanceReporterCsvParser> records)
@@ -90,6 +73,23 @@ namespace BalanceReporter
                  .ThenBy(k => k.Month);
         }
         
+        private static IOrderedEnumerable<Transaction> GetCompanyNamyThatSendsOrSpendMostMoneyByYear
+            (IEnumerable<BalanceReporterCsvParser> records, Func<BalanceReporterCsvParser, bool> filter)
+        {
+            var t = records
+                .Where(filter)
+                .GroupBy(e => new { e.Date.Year, e.OrganizationTransaction })
+                .Select(e => 
+                    new Transaction()
+                    {
+                        Value = e.Sum(p => p.SumTransaction), 
+                        Year = e.Key.Year, 
+                        Organization = e.Key.OrganizationTransaction
+                    });
+            return t
+                .Where(e => e.Value == t.Where(f => f.Year == e.Year).Max(q => q.Value))
+                .OrderBy(e => e.Year);
+        }
         
         private static IOrderedEnumerable<Transaction> GetAverageCostsOrIncomeByYear
             (IEnumerable<BalanceReporterCsvParser> records, Func<BalanceReporterCsvParser,bool> filter)
