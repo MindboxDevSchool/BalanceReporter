@@ -1,4 +1,6 @@
+using System.Linq;
 using NUnit.Framework;
+using BalanceReporter;
 
 namespace BalanceReporterTests
 {
@@ -6,9 +8,17 @@ namespace BalanceReporterTests
     public class BalanceReporterTests
     {
         [Test]
-        public void Test()
+        public void LoadTransactions_Loads1000Records()
         {
-            Assert.Pass();
+            // Arrange
+            string filepath = "data/tx00.csv";
+            int expectedRecordCount = 10000;
+
+            // Act
+            int actualRecordCount = Program.LoadTransactions(filepath).Count();
+            
+            // Assert
+            Assert.AreEqual(expectedRecordCount, actualRecordCount);
         }
     }
 }
