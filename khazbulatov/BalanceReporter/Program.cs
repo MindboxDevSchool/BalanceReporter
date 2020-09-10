@@ -45,7 +45,7 @@ namespace BalanceReporter
             }
         }
         
-        public static void OutputMonthlyMaximums()
+        public static void OutputMonthlyMaxima()
         {
             IEnumerable transactionStats = Reporter.AggregateAmountByPeriod(txGroup => 
                 txGroup.Max(tx => tx.Amount)
@@ -72,7 +72,7 @@ namespace BalanceReporter
             LoadFile();
             OutputMonthlyTotals();
             OutputMonthlyMeans();
-            OutputMonthlyMaximums();
+            OutputMonthlyMaxima();
             OutputMonthlyCounts();
         }
     }
