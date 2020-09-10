@@ -36,7 +36,7 @@ namespace BalanceReporter
             Reporter.LoadTransactions(filepath);
         }
 
-        public static void AggregateData()
+        public static void OutputAggregateData()
         {
             OutputMonthlyStats(StatsType.Total);
             OutputMonthlyStats(StatsType.Average);
@@ -47,7 +47,7 @@ namespace BalanceReporter
         public static void Main(string[] args)
         {
             LoadData();
-            AggregateData();
+            OutputAggregateData();
         }
     }
 }

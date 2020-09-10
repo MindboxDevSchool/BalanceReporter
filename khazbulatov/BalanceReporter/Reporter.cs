@@ -49,7 +49,8 @@ namespace BalanceReporter
                 });
         }
         
-        public IEnumerable<TransactionStats> AggregateAmountByBusiness(
+        // TODO: Duplicate code here, how can I DRY it up?
+        public IEnumerable<TransactionStats> AggregateAmountByPeriodAndBusiness(
             Func<IEnumerable<Transaction>, decimal> aggregator)
         {
             return Transactions
