@@ -6,7 +6,7 @@ namespace BalanceReporter
 {
     public class TransactionProcessor
     {
-        public List<Transaction> Transactions { get; set; }
+        private List<Transaction> Transactions { get; set; }
 
         public TransactionProcessor(List<Transaction> transactions)
         {
@@ -28,42 +28,147 @@ namespace BalanceReporter
 
         public double[] CashFlowByYear(int year)
         {
-            throw new NotImplementedException();
+            double expense = 0;
+            double income = 0;
+
+            List<Transaction> transactionsSample = Transactions.Where(t => t.Date.Year == year).ToList();
+
+            income = transactionsSample.Where(t => t.Amount > 0).Sum(t => t.Amount);
+            expense = transactionsSample.Where(t => t.Amount < 0).Sum(t => t.Amount);
+            
+            return new double[] {income, expense};
         }
 
         public double AverageExpense(int year)
         {
-            throw new NotImplementedException();
+            double averageExpense = Transactions.Where(t => t.Date.Year == year && t.Amount < 0).Sum(t => t.Amount);
+
+            averageExpense /= 12.0;
+            
+            return averageExpense;
         }
 
         public double AverageIncome(int year)
         {
-            throw new NotImplementedException();
+            double averageIncome = Transactions.Where(t => t.Date.Year == year && t.Amount > 0).Sum(t => t.Amount);
+
+            averageIncome /= 12.0;
+            
+            return averageIncome;
         }
 
         public TransactionsStatistics MaxExpense(int year)
         {
-            throw new NotImplementedException();
+            int month = 1;
+            double expense = 0;
+
+            List<Transaction> transactionsSample = Transactions.Where(t => t.Date.Year == year).ToList();
+
+            for (int i = 1; i <= 12; i++)
+            {
+                double temp = transactionsSample.Where(t => t.Date.Month == i && t.Amount < 0).Sum(t => t.Amount);
+
+                if (temp < expense)
+                {
+                    expense = temp;
+                    month = i;
+                }
+            }
+            
+            return new TransactionsStatistics(expense, month);
         }
         
         public TransactionsStatistics MaxIncome(int year)
         {
-            throw new NotImplementedException();
+            int month = 1;
+            double expense = 0;
+
+            List<Transaction> transactionsSample = Transactions.Where(t => t.Date.Year == year).ToList();
+
+            for (int i = 1; i <= 12; i++)
+            {
+                double temp = transactionsSample.Where(t => t.Date.Month == i && t.Amount > 0).Sum(t => t.Amount);
+
+                if (temp > expense)
+                {
+                    expense = temp;
+                    month = i;
+                }
+            }
+            
+            return new TransactionsStatistics(expense, month);
         }
         
         public TransactionsStatistics MostProfitableAccount(int year)
         {
-            throw new NotImplementedException();
+            string account = String.Empty;
+            double amount = 0;
+            
+            List<Transaction> transactionsSample = Transactions.Where(t => t.Date.Year == year && t.Amount > 0).ToList();
+            
+            List<Transaction> uniqueAccountsTransactions = transactionsSample.Distinct(new Transaction.Comparer()).ToList();
+
+            foreach (var uniqueAccountsTransaction in uniqueAccountsTransactions)
+            {
+                double temp = transactionsSample.Where(t => t.Account == uniqueAccountsTransaction.Account)
+                    .Sum(t => t.Amount);
+
+                if (temp > amount)
+                {
+                    amount = temp;
+                    account = uniqueAccountsTransaction.Account;
+                }
+            }
+
+            return new TransactionsStatistics(account, amount);
         }
         
-        public TransactionsStatistics MostExpensiveAccountByMonth(int month)
+        public TransactionsStatistics MostExpensiveAccountByMonth(int month, int year)
         {
-            throw new NotImplementedException();
+            string account = String.Empty;
+            double amount = 0;
+            
+            List<Transaction> transactionsSample = Transactions.Where(t => t.Date.Year == year && t.Date.Month == month && t.Amount < 0).ToList();
+            
+            List<Transaction> uniqueAccountsTransactions = transactionsSample.Distinct(new Transaction.Comparer()).ToList();
+
+            foreach (var uniqueAccountsTransaction in uniqueAccountsTransactions)
+            {
+                double temp = transactionsSample.Where(t => t.Account == uniqueAccountsTransaction.Account)
+                    .Sum(t => t.Amount);
+
+                if (temp < amount)
+                {
+                    amount = temp;
+                    account = uniqueAccountsTransaction.Account;
+                }
+            }
+
+            return new TransactionsStatistics(account, amount);
         }
         
         public TransactionsStatistics MostExpensiveAccountByYear(int year)
         {
-            throw new NotImplementedException();
+            string account = String.Empty;
+            double amount = 0;
+            
+            List<Transaction> transactionsSample = Transactions.Where(t => t.Date.Year == year && t.Amount < 0).ToList();
+            
+            List<Transaction> uniqueAccountsTransactions = transactionsSample.Distinct(new Transaction.Comparer()).ToList();
+
+            foreach (var uniqueAccountsTransaction in uniqueAccountsTransactions)
+            {
+                double temp = transactionsSample.Where(t => t.Account == uniqueAccountsTransaction.Account)
+                    .Sum(t => t.Amount);
+
+                if (temp < amount)
+                {
+                    amount = temp;
+                    account = uniqueAccountsTransaction.Account;
+                }
+            }
+
+            return new TransactionsStatistics(account, amount);
         }
     }
 }
