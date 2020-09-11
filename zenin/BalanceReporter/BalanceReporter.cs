@@ -47,18 +47,18 @@ namespace BalanceReporter
 
         public static DataTable CreateBalanceTable()
         {
-            var movementTable = new DataTable();
-            movementTable.Columns.Add("period", typeof(string));
-            movementTable.Columns.Add("earned", typeof(double));
-            movementTable.Columns.Add("spent", typeof(double));
-            movementTable.Columns.Add("positive_transactions", typeof(int));
-            movementTable.Columns.Add("negative_transactions", typeof(int));
-            movementTable.Columns.Add("max_earnings", typeof(double));
-            movementTable.Columns.Add("max_costs", typeof(double));
-            movementTable.Columns.Add("max_investor", typeof(string));
-            movementTable.Columns.Add("max_spender", typeof(string));
+            var balanceTable = new DataTable();
+            balanceTable.Columns.Add("period", typeof(string));
+            balanceTable.Columns.Add("earned", typeof(double));
+            balanceTable.Columns.Add("spent", typeof(double));
+            balanceTable.Columns.Add("positive_transactions", typeof(int));
+            balanceTable.Columns.Add("negative_transactions", typeof(int));
+            balanceTable.Columns.Add("max_earnings", typeof(double));
+            balanceTable.Columns.Add("max_costs", typeof(double));
+            balanceTable.Columns.Add("max_investor", typeof(string));
+            balanceTable.Columns.Add("max_spender", typeof(string));
             
-            return movementTable;
+            return balanceTable;
         }
 
         public static DataTable UpdateMaximumAmounts(DataTable balanceTable, string period, double amount)
@@ -144,16 +144,6 @@ namespace BalanceReporter
                 
             }
             return yearsBalanceTable;
-        }
-        
-        public static void FindOverallMeans(DataTable table)
-        {
-            
-        }
-        
-        public static double FindMaximumAmountInRawTable(DataTable rawTable)
-        {
-            return 0.0;
         }
 
         public static void PrintReport(DataTable table)
