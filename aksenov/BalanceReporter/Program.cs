@@ -14,32 +14,38 @@ namespace BalanceReporter
             
             TransactionProcessor transactionProcessor = new TransactionProcessor(transactions);
 
-            double[] cashFlowForAugust = transactionProcessor.FlowOfFunds(8, 2018);
-            Console.WriteLine($"2018, {(Months)(7)}. Income: {cashFlowForAugust[0]}$. Expense: {cashFlowForAugust[1]}$");
+            Console.WriteLine("Enter the month and year for which you want to know the transaction statistics:");
+            Console.Write("month: ");
+            int inputMonth = Convert.ToInt32(Console.ReadLine());
+            Console.Write("year: ");
+            int inputYear = Convert.ToInt32(Console.ReadLine());
 
-            double[] cashFlowFor2020 = transactionProcessor.FlowOfFunds(2020);
-            Console.WriteLine($"2020. Income: {cashFlowFor2020[0]}$. Expense: {cashFlowFor2020[1]}$");
+            double[] cashFlowForMonth = transactionProcessor.FlowOfFunds(inputMonth, inputYear);
+            Console.WriteLine($"{inputYear}, {(Months)(inputMonth - 1)}. Income: {cashFlowForMonth[0]}$. Expense: {cashFlowForMonth[1]}$");
 
-            double averageExpense = transactionProcessor.AverageExpense(2020);
-            Console.WriteLine($"2020. Average expense: {averageExpense}$ per month.");
-            
-            double averageIncome = transactionProcessor.AverageIncome(2020);
-            Console.WriteLine($"2020. Average income: {averageIncome}$ per month.");
+            double[] cashFlowForYear = transactionProcessor.FlowOfFunds(inputYear);
+            Console.WriteLine($"{inputYear}. Income: {cashFlowForYear[0]}$. Expense: {cashFlowForYear[1]}$");
 
-            TransactionsStatistics maxExpenseStatistics = transactionProcessor.MaxExpense(2020);
-            Console.WriteLine($"2020. Max expense: {maxExpenseStatistics.Amount}$ in {(Months)(maxExpenseStatistics.Month - 1)}");
+            double averageExpense = transactionProcessor.AverageExpense(inputYear);
+            Console.WriteLine($"{inputYear}. Average expense: {averageExpense}$ per month.");
             
-            TransactionsStatistics maxIncomeStatistics = transactionProcessor.MaxIncome(2020);
-            Console.WriteLine($"2020. Max income: {maxIncomeStatistics.Amount}$ in {(Months)(maxIncomeStatistics.Month - 1)}");
+            double averageIncome = transactionProcessor.AverageIncome(inputYear);
+            Console.WriteLine($"{inputYear}. Average income: {averageIncome}$ per month.");
+
+            TransactionsStatistics maxExpenseStatistics = transactionProcessor.MaxExpense(inputYear);
+            Console.WriteLine($"{inputYear}. Max expense: {maxExpenseStatistics.Amount}$ in {(Months)(maxExpenseStatistics.Month - 1)}");
             
-            TransactionsStatistics profitableAccountStatistics = transactionProcessor.MostProfitableAccount(2020);
-            Console.WriteLine($"2020. The most profitable account: {profitableAccountStatistics.Account} ({(profitableAccountStatistics.Amount)}$)");
+            TransactionsStatistics maxIncomeStatistics = transactionProcessor.MaxIncome(inputYear);
+            Console.WriteLine($"{inputYear}. Max income: {maxIncomeStatistics.Amount}$ in {(Months)(maxIncomeStatistics.Month - 1)}");
             
-            TransactionsStatistics expensiveAccountMonthStatistics = transactionProcessor.MostExpensiveAccount(5, 2020);
-            Console.WriteLine($"2020. The most expensive account in {(Months)(4)}: {expensiveAccountMonthStatistics.Account} ({(expensiveAccountMonthStatistics.Amount)}$)");
+            TransactionsStatistics profitableAccountStatistics = transactionProcessor.MostProfitableAccount(inputYear);
+            Console.WriteLine($"{inputYear}. The most profitable account: {profitableAccountStatistics.Account} ({(profitableAccountStatistics.Amount)}$)");
             
-            TransactionsStatistics expensiveAccountYearStatistics = transactionProcessor.MostExpensiveAccount(2020);
-            Console.WriteLine($"2020. The most expensive account: {expensiveAccountYearStatistics.Account} ({(expensiveAccountYearStatistics.Amount)}$)");
+            TransactionsStatistics expensiveAccountMonthStatistics = transactionProcessor.MostExpensiveAccount(inputMonth, inputYear);
+            Console.WriteLine($"{inputYear}. The most expensive account in {(Months)(inputMonth - 1)}: {expensiveAccountMonthStatistics.Account} ({(expensiveAccountMonthStatistics.Amount)}$)");
+            
+            TransactionsStatistics expensiveAccountYearStatistics = transactionProcessor.MostExpensiveAccount(inputYear);
+            Console.WriteLine($"{inputYear}. The most expensive account: {expensiveAccountYearStatistics.Account} ({(expensiveAccountYearStatistics.Amount)}$)");
         }
 
         enum Months
