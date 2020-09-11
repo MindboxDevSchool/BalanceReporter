@@ -39,7 +39,7 @@ namespace BalanceReporterTests
             TransactionProcessor transactionProcessor = new TransactionProcessor(transactions);
             
             //act
-            double[] cashFlow = transactionProcessor.CashFlowByMonth(1, 2020);
+            double[] cashFlow = transactionProcessor.FlowOfFunds(1, 2020);
             
             //assert
             Assert.AreEqual(new double[] {0, -3500}, cashFlow);
@@ -52,7 +52,7 @@ namespace BalanceReporterTests
             TransactionProcessor transactionProcessor = new TransactionProcessor(transactions);
             
             //act
-            double[] cashFlow = transactionProcessor.CashFlowByYear(2020);
+            double[] cashFlow = transactionProcessor.FlowOfFunds(2020);
             
             //assert
             Assert.AreEqual(new double[] {16200, -10500}, cashFlow);
@@ -135,7 +135,7 @@ namespace BalanceReporterTests
             TransactionProcessor transactionProcessor = new TransactionProcessor(transactions);
             
             //act
-            TransactionsStatistics statistics = transactionProcessor.MostExpensiveAccountByMonth(month, year);
+            TransactionsStatistics statistics = transactionProcessor.MostExpensiveAccount(month, year);
             
             //assert
             Assert.AreEqual("Account6", statistics.Account);
@@ -150,7 +150,7 @@ namespace BalanceReporterTests
             TransactionProcessor transactionProcessor = new TransactionProcessor(transactions);
             
             //act
-            TransactionsStatistics statistics = transactionProcessor.MostExpensiveAccountByYear(year);
+            TransactionsStatistics statistics = transactionProcessor.MostExpensiveAccount(year);
             
             //assert
             Assert.AreEqual("Account0", statistics.Account);

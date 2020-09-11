@@ -1,6 +1,8 @@
-﻿namespace BalanceReporter
+﻿using System;
+
+namespace BalanceReporter
 {
-    public class TransactionsStatistics
+    public struct TransactionsStatistics
     {
         public string Account { get; set; }
         
@@ -12,12 +14,14 @@
         {
             Account = account;
             Amount = amount;
+            Month = 1;
         }
         
         public TransactionsStatistics(double amount, int month)
         {
             Amount = amount;
             Month = month;
+            Account = String.Empty;
         }
     }
 }

@@ -13,28 +13,22 @@ namespace BalanceReporter
             Transactions = transactions;
         }
 
-        public double[] CashFlowByMonth(int month, int year)
+        public double[] FlowOfFunds(int month, int year)
         {
-            double expense = 0;
-            double income = 0;
-
             List<Transaction> transactionsSample = Transactions.Where(t => t.Date.Year == year && t.Date.Month == month).ToList();
 
-            income = transactionsSample.Where(t => t.Amount > 0).Sum(t => t.Amount);
-            expense = transactionsSample.Where(t => t.Amount < 0).Sum(t => t.Amount);
+            double income = transactionsSample.Where(t => t.Amount > 0).Sum(t => t.Amount);
+            double expense = transactionsSample.Where(t => t.Amount < 0).Sum(t => t.Amount);
             
             return new double[] {income, expense};
         }
 
-        public double[] CashFlowByYear(int year)
+        public double[] FlowOfFunds(int year)
         {
-            double expense = 0;
-            double income = 0;
-
             List<Transaction> transactionsSample = Transactions.Where(t => t.Date.Year == year).ToList();
 
-            income = transactionsSample.Where(t => t.Amount > 0).Sum(t => t.Amount);
-            expense = transactionsSample.Where(t => t.Amount < 0).Sum(t => t.Amount);
+            double income = transactionsSample.Where(t => t.Amount > 0).Sum(t => t.Amount);
+            double expense = transactionsSample.Where(t => t.Amount < 0).Sum(t => t.Amount);
             
             return new double[] {income, expense};
         }
@@ -59,44 +53,44 @@ namespace BalanceReporter
 
         public TransactionsStatistics MaxExpense(int year)
         {
-            int month = 1;
-            double expense = 0;
+            int maxExpenseMonth = 1;
+            double maxExpenseAmount = 0;
 
             List<Transaction> transactionsSample = Transactions.Where(t => t.Date.Year == year).ToList();
 
-            for (int i = 1; i <= 12; i++)
+            for (int month = 1; month <= 12; month++)
             {
-                double temp = transactionsSample.Where(t => t.Date.Month == i && t.Amount < 0).Sum(t => t.Amount);
+                double monthlyAmount = transactionsSample.Where(t => t.Date.Month == month && t.Amount < 0).Sum(t => t.Amount);
 
-                if (temp < expense)
+                if (monthlyAmount < maxExpenseAmount)
                 {
-                    expense = temp;
-                    month = i;
+                    maxExpenseAmount = monthlyAmount;
+                    maxExpenseMonth = month;
                 }
             }
             
-            return new TransactionsStatistics(expense, month);
+            return new TransactionsStatistics(maxExpenseAmount, maxExpenseMonth);
         }
         
         public TransactionsStatistics MaxIncome(int year)
         {
-            int month = 1;
-            double expense = 0;
+            int maxIncomeMonth = 1;
+            double maxIncomeAmount = 0;
 
             List<Transaction> transactionsSample = Transactions.Where(t => t.Date.Year == year).ToList();
 
-            for (int i = 1; i <= 12; i++)
+            for (int month = 1; month <= 12; month++)
             {
-                double temp = transactionsSample.Where(t => t.Date.Month == i && t.Amount > 0).Sum(t => t.Amount);
+                double monthlyAmount = transactionsSample.Where(t => t.Date.Month == month && t.Amount > 0).Sum(t => t.Amount);
 
-                if (temp > expense)
+                if (monthlyAmount > maxIncomeAmount)
                 {
-                    expense = temp;
-                    month = i;
+                    maxIncomeAmount = monthlyAmount;
+                    maxIncomeMonth = month;
                 }
             }
             
-            return new TransactionsStatistics(expense, month);
+            return new TransactionsStatistics(maxIncomeAmount, maxIncomeMonth);
         }
         
         public TransactionsStatistics MostProfitableAccount(int year)
@@ -123,36 +117,24 @@ namespace BalanceReporter
             return new TransactionsStatistics(account, amount);
         }
         
-        public TransactionsStatistics MostExpensiveAccountByMonth(int month, int year)
+        public TransactionsStatistics MostExpensiveAccount(int month, int year)
         {
-            string account = String.Empty;
-            double amount = 0;
-            
             List<Transaction> transactionsSample = Transactions.Where(t => t.Date.Year == year && t.Date.Month == month && t.Amount < 0).ToList();
-            
-            List<Transaction> uniqueAccountsTransactions = transactionsSample.Distinct(new Transaction.Comparer()).ToList();
 
-            foreach (var uniqueAccountsTransaction in uniqueAccountsTransactions)
-            {
-                double temp = transactionsSample.Where(t => t.Account == uniqueAccountsTransaction.Account)
-                    .Sum(t => t.Amount);
-
-                if (temp < amount)
-                {
-                    amount = temp;
-                    account = uniqueAccountsTransaction.Account;
-                }
-            }
-
-            return new TransactionsStatistics(account, amount);
+            return MostExpensiveAccount(transactionsSample);
         }
         
-        public TransactionsStatistics MostExpensiveAccountByYear(int year)
+        public TransactionsStatistics MostExpensiveAccount(int year)
+        {
+            List<Transaction> transactionsSample = Transactions.Where(t => t.Date.Year == year && t.Amount < 0).ToList();
+
+            return MostExpensiveAccount(transactionsSample);
+        }
+
+        private TransactionsStatistics MostExpensiveAccount(List<Transaction> transactionsSample)
         {
             string account = String.Empty;
             double amount = 0;
-            
-            List<Transaction> transactionsSample = Transactions.Where(t => t.Date.Year == year && t.Amount < 0).ToList();
             
             List<Transaction> uniqueAccountsTransactions = transactionsSample.Distinct(new Transaction.Comparer()).ToList();
 
@@ -165,7 +147,7 @@ namespace BalanceReporter
                 {
                     amount = temp;
                     account = uniqueAccountsTransaction.Account;
-                }
+                } 
             }
 
             return new TransactionsStatistics(account, amount);

@@ -14,10 +14,10 @@ namespace BalanceReporter
             
             TransactionProcessor transactionProcessor = new TransactionProcessor(transactions);
 
-            double[] cashFlowForAugust = transactionProcessor.CashFlowByMonth(8, 2018);
+            double[] cashFlowForAugust = transactionProcessor.FlowOfFunds(8, 2018);
             Console.WriteLine($"2018, {(Months)(7)}. Income: {cashFlowForAugust[0]}$. Expense: {cashFlowForAugust[1]}$");
 
-            double[] cashFlowFor2020 = transactionProcessor.CashFlowByYear(2020);
+            double[] cashFlowFor2020 = transactionProcessor.FlowOfFunds(2020);
             Console.WriteLine($"2020. Income: {cashFlowFor2020[0]}$. Expense: {cashFlowFor2020[1]}$");
 
             double averageExpense = transactionProcessor.AverageExpense(2020);
@@ -35,10 +35,10 @@ namespace BalanceReporter
             TransactionsStatistics profitableAccountStatistics = transactionProcessor.MostProfitableAccount(2020);
             Console.WriteLine($"2020. The most profitable account: {profitableAccountStatistics.Account} ({(profitableAccountStatistics.Amount)}$)");
             
-            TransactionsStatistics expensiveAccountMonthStatistics = transactionProcessor.MostExpensiveAccountByMonth(5, 2020);
+            TransactionsStatistics expensiveAccountMonthStatistics = transactionProcessor.MostExpensiveAccount(5, 2020);
             Console.WriteLine($"2020. The most expensive account in {(Months)(4)}: {expensiveAccountMonthStatistics.Account} ({(expensiveAccountMonthStatistics.Amount)}$)");
             
-            TransactionsStatistics expensiveAccountYearStatistics = transactionProcessor.MostExpensiveAccountByYear(2020);
+            TransactionsStatistics expensiveAccountYearStatistics = transactionProcessor.MostExpensiveAccount(2020);
             Console.WriteLine($"2020. The most expensive account: {expensiveAccountYearStatistics.Account} ({(expensiveAccountYearStatistics.Amount)}$)");
         }
 
