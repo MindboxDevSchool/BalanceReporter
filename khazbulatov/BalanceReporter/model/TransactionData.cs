@@ -10,7 +10,15 @@ namespace BalanceReporter.model
         public string Business { get; set; }
         public bool IsIncoming { get; set; }
         public decimal Amount { get; set; }
-        
+
+        public int CompareTo(object obj)
+        {
+            TransactionData other = obj as TransactionData;
+            if (other == null) throw new ArgumentException();
+            return new DateTime(this.Year, this.Month, this.Day)
+                .CompareTo(new DateTime(other.Year, other.Month, other.Day));
+        }
+
         public static TransactionData Parse(string str, char separator)
         {
             string[] row = str.Split(separator);
@@ -43,17 +51,9 @@ namespace BalanceReporter.model
         {
             TransactionData other = obj as TransactionData;
             if (other == null) return false;
-            return this.Year == other.Year && this.Month == other.Month && this.Day == other.Day 
-                   && this.IsIncoming == other.IsIncoming && this.Amount == other.Amount 
+            return this.Year == other.Year && this.Month == other.Month && this.Day == other.Day
+                   && this.IsIncoming == other.IsIncoming && this.Amount == other.Amount
                    && this.Business == other.Business;
-        }
-        
-        public int CompareTo(object obj)
-        {
-            TransactionData other = obj as TransactionData;
-            if (other == null) throw new ArgumentException();
-            return new DateTime(this.Year, this.Month, this.Day)
-                .CompareTo(new DateTime(other.Year, other.Month, other.Day));
         }
 
         public override string ToString()
@@ -65,9 +65,10 @@ namespace BalanceReporter.model
                 Day != default ? " on "
                 : Month != default || Year != default ? " in "
                 : "";
-            return IsIncoming
-                ? $"received" + (Business != null ? $" from {Business}" : "") + $"{datePrefix}{day}{month}{year}: {Amount}"
-                : $"spent" + (Business != null ? $" on {Business}" : "") + $"{datePrefix}{day}{month}{year}: {Amount}";
+            return (IsIncoming
+                       ? $"received" + (Business != null ? $" from {Business}" : "")
+                       : $"spent" + (Business != null ? $" on {Business}" : ""))
+                   + $"{datePrefix}{day}{month}{year}: {Amount}";
         }
     }
 }

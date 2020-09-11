@@ -12,7 +12,7 @@ namespace BalanceReporter.model
                 IsIncoming = tx.IsIncoming
             }
         };
-        
+
         public static readonly TransactionGrouper Yearly = new TransactionGrouper()
         {
             Label = "yearly",
@@ -22,6 +22,7 @@ namespace BalanceReporter.model
                 IsIncoming = tx.IsIncoming
             }
         };
+
         public static readonly TransactionGrouper Monthly = new TransactionGrouper()
         {
             Label = "monthly",
@@ -33,15 +34,7 @@ namespace BalanceReporter.model
             }
         };
 
-        public string Label
-        {
-            get;
-            private set;
-        }
-        public Func<TransactionData, TransactionData> KeyFunction
-        {
-            get;
-            private set;
-        }
+        public string Label { get; private set; }
+        public Func<TransactionData, TransactionData> KeyFunction { get; private set; }
     }
 }

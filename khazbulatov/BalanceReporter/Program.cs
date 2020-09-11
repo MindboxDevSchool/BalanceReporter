@@ -17,9 +17,8 @@ namespace BalanceReporter
             string filename = Console.ReadLine();
             return path + filename;
         }
-        
-        public static int LoadTransactionData(string filepath,
-            char separator = ',', bool hasHeader = true)
+
+        public static int LoadTransactionData(string filepath, char separator = ',', bool hasHeader = true)
         {
             using StreamReader reader = new StreamReader(filepath);
             if (hasHeader)
@@ -45,10 +44,8 @@ namespace BalanceReporter
             Transactions.Sort();
         }
 
-        public static IEnumerable<TransactionData> AggregateAmountData(
-            IEnumerable<TransactionData> transactionData,
-            TransactionGrouper transactionGrouper,
-            TransactionAggregator transactionAggregator)
+        public static IEnumerable<TransactionData> AggregateAmountData(IEnumerable<TransactionData> transactionData,
+            TransactionGrouper transactionGrouper, TransactionAggregator transactionAggregator)
         {
             return transactionData
                 .GroupBy(transactionGrouper.KeyFunction)
@@ -64,8 +61,7 @@ namespace BalanceReporter
             }
         }
 
-        public static void OutputTransactionsStats(
-            TransactionGrouper grouper, TransactionAggregator aggregator)
+        public static void OutputTransactionStats(TransactionGrouper grouper, TransactionAggregator aggregator)
         {
             IEnumerable<TransactionData> amountStats = AggregateAmountData(Transactions, grouper, aggregator);
             foreach (TransactionData stats in amountStats)
@@ -83,9 +79,9 @@ namespace BalanceReporter
 
         public static void OutputStats()
         {
-            OutputTransactionsStats(TransactionGrouper.Monthly, TransactionAggregator.AverageAmount);
-            OutputTransactionsStats(TransactionGrouper.Yearly, TransactionAggregator.MaximumAmount);
-            OutputTransactionsStats(TransactionGrouper.Overall, TransactionAggregator.TotalAmount);
+            OutputTransactionStats(TransactionGrouper.Monthly, TransactionAggregator.AverageAmount);
+            OutputTransactionStats(TransactionGrouper.Yearly, TransactionAggregator.MaximumAmount);
+            OutputTransactionStats(TransactionGrouper.Overall, TransactionAggregator.TotalAmount);
         }
 
         public static void Main(string[] args)

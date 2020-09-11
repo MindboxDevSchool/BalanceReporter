@@ -15,6 +15,7 @@ namespace BalanceReporter.model
                 return stats;
             }
         };
+
         public static readonly TransactionAggregator AverageAmount = new TransactionAggregator()
         {
             Label = "average amount",
@@ -24,6 +25,7 @@ namespace BalanceReporter.model
                 return stats;
             }
         };
+
         public static readonly TransactionAggregator MaximumAmount = new TransactionAggregator()
         {
             Label = "maximum amount",
@@ -34,11 +36,8 @@ namespace BalanceReporter.model
             }
         };
 
-        public string Label
-        {
-            get;
-            private set;
-        }
+        public string Label { get; private set; }
+
         public Func<IEnumerable<TransactionData>, TransactionData, TransactionData> AggregateFunction
         {
             get;

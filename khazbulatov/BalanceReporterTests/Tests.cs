@@ -1,5 +1,5 @@
-using NUnit.Framework;
 using BalanceReporter;
+using NUnit.Framework;
 
 namespace BalanceReporterTests
 {
@@ -15,7 +15,7 @@ namespace BalanceReporterTests
 
             // Act
             int actualRecordCount = Program.LoadTransactionData(filepath);
-            
+
             // Assert
             Assert.AreEqual(expectedRecordCount, actualRecordCount);
         }
