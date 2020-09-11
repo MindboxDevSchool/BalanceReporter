@@ -7,14 +7,14 @@ using System.Data;
 
 namespace BalanceReporter
 {
-    public class Program
+    public class BalanceReporter
     {
         public static DataTable FromCSVtoDataTable(string fileName)
         {
             //string path = System.IO.Directory.GetCurrentDirectory();
             var path = @"C:\Users\ilyaz\RiderProjects\BalanceReporter\zenin\BalanceReporter\";
             
-            DataTable table = new DataTable();
+            var table = new DataTable();
             table.Columns.Add("date", typeof(string));
             table.Columns.Add("name", typeof(string));
             table.Columns.Add("amount", typeof(double));
@@ -44,22 +44,25 @@ namespace BalanceReporter
             return index;
         }
 
-        public static DataTable CreateMovementTable()
+        public static DataTable CreateMovementsTable()
         {
-            DataTable movementTable = new DataTable();
+            var movementTable = new DataTable();
             movementTable.Columns.Add("period", typeof(string));
             movementTable.Columns.Add("earned", typeof(double));
             movementTable.Columns.Add("spent", typeof(double));
+            movementTable.Columns.Add("positive_transactions", typeof(int));
+            movementTable.Columns.Add("negative_transactions", typeof(int));
             return movementTable;
         }
 
-        public static DataTable AddAmountInMovementTable(DataTable movementTable, string period, double amount)
+        public static DataTable AddAmountInMovementTable(DataTable movementTable, string period, double amount, 
+            int numberOfTransactions)
         {
-            int index = FindIndexOfStringInColumn(movementTable, period, "period");
+            var index = FindIndexOfStringInColumn(movementTable, period, "period");
 
             if (index == -1)
             {
-                movementTable.Rows.Add(period, 0.0, 0.0);
+                movementTable.Rows.Add(period, 0.0, 0.0, 0, 0);
                 index = FindIndexOfStringInColumn(movementTable, period, "period");
             }
 
@@ -67,11 +70,15 @@ namespace BalanceReporter
             {
                 var earned = amount + (double) movementTable.Rows[index]["earned"];
                 movementTable.Rows[index].SetField(1, earned);
+                movementTable.Rows[index].SetField(3, 
+                    (int)movementTable.Rows[index]["positive_transactions"] + numberOfTransactions);
             }
             else
             {
                 var spent = amount + (double) movementTable.Rows[index]["spent"];
                 movementTable.Rows[index].SetField(2, spent);
+                movementTable.Rows[index].SetField(4, 
+                    (int)movementTable.Rows[index]["negative_transactions"] + numberOfTransactions);
             }
 
             return movementTable;
@@ -82,14 +89,14 @@ namespace BalanceReporter
             string[] months = {"January","February","March","April","May","June",
                 "July", "August","September","October","November","December"};
 
-            DataTable movementTable = CreateMovementTable();
+            var movementTable = CreateMovementsTable();
 
             foreach (DataRow row in dataTable.Rows)
             {
                 var month = row["date"].ToString();
                 month = months[Convert.ToInt32(month.Split('.')[1])-1] + " " + month.Split('.')[2];
 
-                movementTable = AddAmountInMovementTable(movementTable, month, (double)row["amount"]);
+                movementTable = AddAmountInMovementTable(movementTable, month, (double)row["amount"], 1);
             }
 
             return movementTable;
@@ -97,29 +104,20 @@ namespace BalanceReporter
         
         public static DataTable CreateYearsMovementsTable(DataTable monthsMovementTable)
         {
-            DataTable yearsMovementTable = CreateMovementTable();
+            var yearsMovementTable = CreateMovementsTable();
             
             foreach (DataRow row in monthsMovementTable.Rows)
             {
                 var year = row["period"].ToString();
                 year = year.Split(' ')[1];
                 
-                yearsMovementTable = AddAmountInMovementTable(yearsMovementTable, year, (double) row["earned"]);
-                yearsMovementTable = AddAmountInMovementTable(yearsMovementTable, year, (double) row["spent"]);
+                yearsMovementTable = AddAmountInMovementTable(yearsMovementTable, year, (double) row["earned"], 
+                    (int) row["positive_transactions"]);
+                yearsMovementTable = AddAmountInMovementTable(yearsMovementTable, year, (double) row["spent"],
+                    (int) row["negative_transactions"]);
                 
             }
             return yearsMovementTable;
-        }
-
-
-        public static void FindMeansByMonths(DataTable dataTable)
-        {
-            
-        }
-        
-        public static void FindMeansByYears(DataTable table)
-        {
-            
         }
         
         public static void FindOverallMeans(DataTable table)
@@ -127,13 +125,28 @@ namespace BalanceReporter
             
         }
 
-        public static void PrintMovements(DataTable table)
+        public static void PrintReport(DataTable table)
         {
             foreach(DataRow row in table.Rows)
             {
                 Console.WriteLine(row["period"]);
-                Console.WriteLine("Earned: {0}", row["earned"]);
-                Console.WriteLine("Spent: {0}", (double)row["spent"]*-1);
+                Console.WriteLine("Earned: {0:F1}", row["earned"]);
+                Console.WriteLine("Spent: {0:F1}", (double)row["spent"]*-1);
+                
+                var positiveTransactions = (int) row["positive_transactions"];
+                if (positiveTransactions != 0)
+                    Console.WriteLine("Average income: {0:F1}", 
+                        (double)row["earned"]/positiveTransactions);
+                else
+                    Console.WriteLine("Average income: {0:F1}", 0);
+                
+                var negativeTransactions = (int) row["negative_transactions"];
+                if (negativeTransactions != 0)
+                    Console.WriteLine("Average consumption: {0:F1}", 
+                        (double)row["spent"]/negativeTransactions * -1);
+                else
+                    Console.WriteLine("Average consumption: {0:F1}", 0);
+
             }
         }
         
@@ -141,11 +154,14 @@ namespace BalanceReporter
         {
             string fileName = "data.csv";
             DataTable dataTable = FromCSVtoDataTable(fileName);
-            DataTable monthsMovementTable = CreateMonthsMovementsTable(dataTable);
-            Console.WriteLine("Months movements:");
-            PrintMovements(monthsMovementTable);
-            Console.WriteLine("Years movements:");
-            PrintMovements(CreateYearsMovementsTable(monthsMovementTable));
+            DataTable monthsMovementsTable = CreateMonthsMovementsTable(dataTable);
+            
+            Console.WriteLine("Months report:");
+            PrintReport(monthsMovementsTable);
+            
+            Console.WriteLine("Years report:");
+            var yearsMovementsTable = CreateYearsMovementsTable(monthsMovementsTable);
+            PrintReport(yearsMovementsTable);
         }
     }
 }
