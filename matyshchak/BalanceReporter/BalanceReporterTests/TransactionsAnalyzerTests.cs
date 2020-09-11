@@ -7,44 +7,20 @@ namespace BalanceReporterTests
 {
     public class TransactionsAnalyzerTests
     {
-        private List<Transaction> _transactions;
         private TransactionsAnalyzer _transactionsAnalyzer;
 
         [SetUp]
         public void Setup()
         {
-            _transactions = new List<Transaction>
+            var transactions = new List<Transaction>
             {
-                new Transaction()
-                {
-                    Date = new DateTime(2020, 1, 1),
-                    TransactionPartner = "a",
-                    Amount = 1
-                },
-
-                new Transaction()
-                {
-                    Date = new DateTime(2020, 1, 1),
-                    TransactionPartner = "b",
-                    Amount = 2
-                },
-
-                new Transaction()
-                {
-                    Date = new DateTime(2020, 2, 2),
-                    TransactionPartner = "a",
-                    Amount = -2
-                },
-                
-                new Transaction()
-                {
-                    Date = new DateTime(2020, 3, 3),
-                    TransactionPartner = "a",
-                    Amount = -3
-                },
+                new Transaction(new DateTime(2020, 1, 1), "a", 1),
+                new Transaction(new DateTime(2020, 1, 1), "b", 2),
+                new Transaction(new DateTime(2020, 2, 2), "a", -2),
+                new Transaction(new DateTime(2020, 3, 3), "a", -3),
             };
             
-            _transactionsAnalyzer = new TransactionsAnalyzer(_transactions);
+            _transactionsAnalyzer = new TransactionsAnalyzer(transactions);
         }
         
         [Test]
@@ -142,6 +118,5 @@ namespace BalanceReporterTests
 
             Assert.That(actualTransactionPartner, Is.EqualTo(expectedTransactionPartner));
         }
-        
     }
 }

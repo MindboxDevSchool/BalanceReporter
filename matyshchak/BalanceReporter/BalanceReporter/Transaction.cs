@@ -4,8 +4,15 @@ namespace BalanceReporter
 {
     public class Transaction
     {
-        public DateTime Date { get; set; }
-        public string TransactionPartner { get; set; }
-        public double Amount { get; set; }
+        public Transaction(DateTime date, string transactionPartner, double amount)
+        {
+            Date = date;
+            TransactionPartner = transactionPartner;
+            Amount = amount;
+        }
+
+        public DateTime Date { get; }
+        public string TransactionPartner { get; }
+        public double Amount { get; }
     }
 }
