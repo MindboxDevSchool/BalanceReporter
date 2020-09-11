@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "Vj8MfCHKBYb7AyJNx1OaXDnv6cVC5EurcibmCFnxjTXBjsreTRkcDNrEFWFfE5TYybwO6t9PQa8LBWWk9Jbyxg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Злата\\RiderProjects\\BankTransactions\\BankTransactionsUnitTestsCalculations\\BankTransactionsUnitTestsCalculations.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Злата\\.nuget\\packages\\microsoft.codecoverage\\16.4.0\\microsoft.codecoverage.16.4.0.nupkg.sha512",
+    "C:\\Users\\Злата\\.nuget\\packages\\microsoft.net.test.sdk\\16.4.0\\microsoft.net.test.sdk.16.4.0.nupkg.sha512",
+    "C:\\Users\\Злата\\.nuget\\packages\\nunit\\3.12.0\\nunit.3.12.0.nupkg.sha512",
+    "C:\\Users\\Злата\\.nuget\\packages\\nunit3testadapter\\3.15.1\\nunit3testadapter.3.15.1.nupkg.sha512"
+  ],
+  "logs": []
+}

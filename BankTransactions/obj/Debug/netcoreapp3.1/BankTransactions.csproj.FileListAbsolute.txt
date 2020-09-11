@@ -1,0 +1,13 @@
+C:\Users\Злата\RiderProjects\BankTransactions\BankTransactions\bin\Debug\netcoreapp3.1\BankTransactions.exe
+C:\Users\Злата\RiderProjects\BankTransactions\BankTransactions\bin\Debug\netcoreapp3.1\BankTransactions.deps.json
+C:\Users\Злата\RiderProjects\BankTransactions\BankTransactions\bin\Debug\netcoreapp3.1\BankTransactions.runtimeconfig.json
+C:\Users\Злата\RiderProjects\BankTransactions\BankTransactions\bin\Debug\netcoreapp3.1\BankTransactions.runtimeconfig.dev.json
+C:\Users\Злата\RiderProjects\BankTransactions\BankTransactions\bin\Debug\netcoreapp3.1\BankTransactions.dll
+C:\Users\Злата\RiderProjects\BankTransactions\BankTransactions\bin\Debug\netcoreapp3.1\BankTransactions.pdb
+C:\Users\Злата\RiderProjects\BankTransactions\BankTransactions\obj\Debug\netcoreapp3.1\BankTransactions.csprojAssemblyReference.cache
+C:\Users\Злата\RiderProjects\BankTransactions\BankTransactions\obj\Debug\netcoreapp3.1\BankTransactions.AssemblyInfoInputs.cache
+C:\Users\Злата\RiderProjects\BankTransactions\BankTransactions\obj\Debug\netcoreapp3.1\BankTransactions.AssemblyInfo.cs
+C:\Users\Злата\RiderProjects\BankTransactions\BankTransactions\obj\Debug\netcoreapp3.1\BankTransactions.csproj.CoreCompileInputs.cache
+C:\Users\Злата\RiderProjects\BankTransactions\BankTransactions\obj\Debug\netcoreapp3.1\BankTransactions.dll
+C:\Users\Злата\RiderProjects\BankTransactions\BankTransactions\obj\Debug\netcoreapp3.1\BankTransactions.pdb
+C:\Users\Злата\RiderProjects\BankTransactions\BankTransactions\obj\Debug\netcoreapp3.1\BankTransactions.genruntimeconfig.cache

@@ -1,0 +1,57 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Злата\\RiderProjects\\BankTransactions\\BankTransactionsUnitTestsCalculations\\BankTransactionsUnitTestsCalculations.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Злата\\RiderProjects\\BankTransactions\\BankTransactionsUnitTestsCalculations\\BankTransactionsUnitTestsCalculations.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Злата\\RiderProjects\\BankTransactions\\BankTransactionsUnitTestsCalculations\\BankTransactionsUnitTestsCalculations.csproj",
+        "projectName": "BankTransactionsUnitTestsCalculations",
+        "projectPath": "C:\\Users\\Злата\\RiderProjects\\BankTransactions\\BankTransactionsUnitTestsCalculations\\BankTransactionsUnitTestsCalculations.csproj",
+        "packagesPath": "C:\\Users\\Злата\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Злата\\RiderProjects\\BankTransactions\\BankTransactionsUnitTestsCalculations\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Злата\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net461"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net461": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net461": {
+          "dependencies": {
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[16.4.0, )"
+            },
+            "NUnit3TestAdapter": {
+              "target": "Package",
+              "version": "[3.15.1, )"
+            },
+            "nunit": {
+              "target": "Package",
+              "version": "[3.12.0, )"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
