@@ -82,6 +82,26 @@ namespace BalanceReporter
 
             var nameWhoMaxSend = CalculateNameWhoMaxSend(bankData);
             var nameWhoMaxGet = CalculateNameWhoMaxGet(bankData);
+            
+            Console.WriteLine("Statistics Of Movement Of Funds By Months:");
+            foreach (var yearRow in yearMonthFundsData)
+            {
+                foreach (var monthRow in yearRow.Value)
+                {
+                    Console.WriteLine("In {0}-th mouth of {1} year: {0:F} funds.", monthRow.Key, yearRow.Key, monthRow.Value);
+                }
+            }
+            Console.WriteLine("Statistics Of Movement Of Funds By Years:");
+            foreach (var yearRow in yearFundsData)
+            {
+                Console.WriteLine("In {0} year: {0:F} funds.", yearRow.Key, yearRow.Value);
+            }
+            Console.WriteLine("Average income: {0:F}", averageIncome);
+            Console.WriteLine("Average expense: {0:F}", averageExpense);
+            Console.WriteLine("Maximum income: {0:F}", maximumIncome);
+            Console.WriteLine("Maximum expense: {0:F}", maximumExpense);
+            Console.WriteLine("{0} was the person who send you maximum amount of funds", nameWhoMaxSend);
+            Console.WriteLine("{0} was the person who get from you maximum amount of funds", nameWhoMaxGet);
         }
 
         public static Dictionary<int, Dictionary<int, double>> CalculateStatisticsOfMovementOfFundsByMonths(
