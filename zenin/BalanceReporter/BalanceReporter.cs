@@ -4,6 +4,7 @@ using System.Security.Permissions;
 using System.IO;
 using System.Linq;
 using System.Data;
+using System.Diagnostics.Tracing;
 
 namespace BalanceReporter
 {
@@ -44,7 +45,7 @@ namespace BalanceReporter
             return index;
         }
 
-        public static DataTable CreateMovementsTable()
+        public static DataTable CreateBalanceTable()
         {
             var movementTable = new DataTable();
             movementTable.Columns.Add("period", typeof(string));
@@ -52,77 +53,107 @@ namespace BalanceReporter
             movementTable.Columns.Add("spent", typeof(double));
             movementTable.Columns.Add("positive_transactions", typeof(int));
             movementTable.Columns.Add("negative_transactions", typeof(int));
+            movementTable.Columns.Add("max_earnings", typeof(double));
+            movementTable.Columns.Add("max_costs", typeof(double));
+            movementTable.Columns.Add("max_investor", typeof(string));
+            movementTable.Columns.Add("max_spender", typeof(string));
+            
             return movementTable;
         }
 
-        public static DataTable AddAmountInMovementTable(DataTable movementTable, string period, double amount, 
+        public static DataTable UpdateMaximumAmounts(DataTable balanceTable, string period, double amount)
+        {
+            var index = FindIndexOfStringInColumn(balanceTable, period, "period");
+
+            if (amount >= 0)
+            {
+                if (amount > (double) balanceTable.Rows[index]["max_earnings"])
+                    balanceTable.Rows[index].SetField("max_earnings", amount);
+            }
+            else
+            {
+                if (amount < (double) balanceTable.Rows[index]["max_costs"])
+                    balanceTable.Rows[index].SetField("max_costs", amount);
+            }
+
+            return balanceTable;
+        }
+
+        public static DataTable AddAmountInBalanceTable(DataTable balanceTable, string period, double amount, 
             int numberOfTransactions)
         {
-            var index = FindIndexOfStringInColumn(movementTable, period, "period");
+            var index = FindIndexOfStringInColumn(balanceTable, period, "period");
 
             if (index == -1)
             {
-                movementTable.Rows.Add(period, 0.0, 0.0, 0, 0);
-                index = FindIndexOfStringInColumn(movementTable, period, "period");
+                balanceTable.Rows.Add(period, 0.0, 0.0, 0, 0, 0.0, 0.0, "None", "None");
+                index = FindIndexOfStringInColumn(balanceTable, period, "period");
             }
 
             if (amount >= 0)
             {
-                var earned = amount + (double) movementTable.Rows[index]["earned"];
-                movementTable.Rows[index].SetField(1, earned);
-                movementTable.Rows[index].SetField(3, 
-                    (int)movementTable.Rows[index]["positive_transactions"] + numberOfTransactions);
+                var earned = amount + (double) balanceTable.Rows[index]["earned"];
+                balanceTable.Rows[index].SetField(1, earned);
+                balanceTable.Rows[index].SetField(3, 
+                    (int)balanceTable.Rows[index]["positive_transactions"] + numberOfTransactions);
             }
             else
             {
-                var spent = amount + (double) movementTable.Rows[index]["spent"];
-                movementTable.Rows[index].SetField(2, spent);
-                movementTable.Rows[index].SetField(4, 
-                    (int)movementTable.Rows[index]["negative_transactions"] + numberOfTransactions);
+                var spent = amount + (double) balanceTable.Rows[index]["spent"];
+                balanceTable.Rows[index].SetField(2, spent);
+                balanceTable.Rows[index].SetField(4, 
+                    (int)balanceTable.Rows[index]["negative_transactions"] + numberOfTransactions);
             }
 
-            return movementTable;
+            balanceTable = UpdateMaximumAmounts(balanceTable, period, amount);
+
+            return balanceTable;
         }
 
-        public static DataTable CreateMonthsMovementsTable(DataTable dataTable)
+        public static DataTable CreateMonthsBalanceTable(DataTable dataTable)
         {
             string[] months = {"January","February","March","April","May","June",
                 "July", "August","September","October","November","December"};
 
-            var movementTable = CreateMovementsTable();
+            var balanceTable = CreateBalanceTable();
 
             foreach (DataRow row in dataTable.Rows)
             {
                 var month = row["date"].ToString();
                 month = months[Convert.ToInt32(month.Split('.')[1])-1] + " " + month.Split('.')[2];
 
-                movementTable = AddAmountInMovementTable(movementTable, month, (double)row["amount"], 1);
+                balanceTable = AddAmountInBalanceTable(balanceTable, month, (double)row["amount"], 1);
             }
 
-            return movementTable;
+            return balanceTable;
         }
         
-        public static DataTable CreateYearsMovementsTable(DataTable monthsMovementTable)
+        public static DataTable CreateYearsBalanceTable(DataTable monthsBalanceTable)
         {
-            var yearsMovementTable = CreateMovementsTable();
+            var yearsBalanceTable = CreateBalanceTable();
             
-            foreach (DataRow row in monthsMovementTable.Rows)
+            foreach (DataRow row in monthsBalanceTable.Rows)
             {
                 var year = row["period"].ToString();
                 year = year.Split(' ')[1];
                 
-                yearsMovementTable = AddAmountInMovementTable(yearsMovementTable, year, (double) row["earned"], 
+                yearsBalanceTable = AddAmountInBalanceTable(yearsBalanceTable, year, (double) row["earned"], 
                     (int) row["positive_transactions"]);
-                yearsMovementTable = AddAmountInMovementTable(yearsMovementTable, year, (double) row["spent"],
+                yearsBalanceTable = AddAmountInBalanceTable(yearsBalanceTable, year, (double) row["spent"],
                     (int) row["negative_transactions"]);
                 
             }
-            return yearsMovementTable;
+            return yearsBalanceTable;
         }
         
         public static void FindOverallMeans(DataTable table)
         {
             
+        }
+        
+        public static double FindMaximumAmountInRawTable(DataTable rawTable)
+        {
+            return 0.0;
         }
 
         public static void PrintReport(DataTable table)
@@ -146,6 +177,9 @@ namespace BalanceReporter
                         (double)row["spent"]/negativeTransactions * -1);
                 else
                     Console.WriteLine("Average consumption: {0:F1}", 0);
+                
+                Console.WriteLine("Maximum earnings: {0:F1}", row["max_earnings"]);
+                Console.WriteLine("Maximum costs: {0:F1}", (double)row["max_costs"]*-1);
 
             }
         }
@@ -154,13 +188,13 @@ namespace BalanceReporter
         {
             string fileName = "data.csv";
             DataTable dataTable = FromCSVtoDataTable(fileName);
-            DataTable monthsMovementsTable = CreateMonthsMovementsTable(dataTable);
+            DataTable monthsMovementsTable = CreateMonthsBalanceTable(dataTable);
             
             Console.WriteLine("Months report:");
             PrintReport(monthsMovementsTable);
             
             Console.WriteLine("Years report:");
-            var yearsMovementsTable = CreateYearsMovementsTable(monthsMovementsTable);
+            var yearsMovementsTable = CreateYearsBalanceTable(monthsMovementsTable);
             PrintReport(yearsMovementsTable);
         }
     }
