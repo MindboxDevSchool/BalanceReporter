@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using BalanceReporter.model;
 
 namespace BalanceReporter
@@ -7,7 +9,7 @@ namespace BalanceReporter
     public static class Program
     {
         private const string DataDirectoryPath = "data/";
-        private static readonly Reporter Reporter = new Reporter();
+        private static List<TransactionData> Transactions { get; set; }
 
         public static string InputFilepath(string path)
         {
@@ -16,38 +18,80 @@ namespace BalanceReporter
             return path + filename;
         }
         
-        public static IEnumerable<TransactionStats> GetMonthlyStats(StatsType statsType)
+        public static int LoadTransactionData(string filepath,
+            char separator = ',', bool hasHeader = true)
         {
-            return Reporter.AggregateAmountByPeriod(statsType.Aggregator);
-        }
-        
-        public static void OutputMonthlyStats(StatsType statsType)
-        {
-            IEnumerable<TransactionStats> transactionStats = GetMonthlyStats(statsType);
-            foreach (TransactionStats stats in transactionStats)
+            using StreamReader reader = new StreamReader(filepath);
+            if (hasHeader)
             {
-                Console.WriteLine($"{statsType.Label} {stats}");
+                reader.ReadLine();
+            }
+
+            int count = 0;
+            List<TransactionData> data = new List<TransactionData>();
+            while (!reader.EndOfStream)
+            {
+                string line = reader.ReadLine();
+                data.Add(TransactionData.Parse(line, separator));
+                ++count;
+            }
+
+            Transactions = data;
+            return count;
+        }
+
+        public static void SortTransactionData()
+        {
+            Transactions.Sort();
+        }
+
+        public static IEnumerable<TransactionData> AggregateAmountData(
+            IEnumerable<TransactionData> transactionData,
+            TransactionGrouper transactionGrouper,
+            TransactionAggregator transactionAggregator)
+        {
+            return transactionData
+                .GroupBy(transactionGrouper.KeyFunction)
+                .Select(txGroup =>
+                    transactionAggregator.AggregateFunction(txGroup, txGroup.Key));
+        }
+
+        public static void OutputTransactions()
+        {
+            foreach (TransactionData transactionData in Transactions)
+            {
+                Console.WriteLine($"- {transactionData}");
             }
         }
 
-        public static void LoadData()
+        public static void OutputTransactionsStats(
+            TransactionGrouper grouper, TransactionAggregator aggregator)
         {
-            string filepath = InputFilepath(DataDirectoryPath);
-            Reporter.LoadTransactions(filepath);
+            IEnumerable<TransactionData> amountStats = AggregateAmountData(Transactions, grouper, aggregator);
+            foreach (TransactionData stats in amountStats)
+            {
+                Console.WriteLine($"- {grouper.Label} {aggregator.Label} {stats}");
+            }
         }
 
-        public static void OutputAggregateData()
+        public static void PrepareData()
         {
-            OutputMonthlyStats(StatsType.Total);
-            OutputMonthlyStats(StatsType.Average);
-            OutputMonthlyStats(StatsType.Maximum);
-            OutputMonthlyStats(StatsType.Count);
+            string filepath = InputFilepath(DataDirectoryPath);
+            LoadTransactionData(filepath);
+            SortTransactionData();
+        }
+
+        public static void OutputStats()
+        {
+            OutputTransactionsStats(TransactionGrouper.Monthly, TransactionAggregator.AverageAmount);
+            OutputTransactionsStats(TransactionGrouper.Yearly, TransactionAggregator.MaximumAmount);
+            OutputTransactionsStats(TransactionGrouper.Overall, TransactionAggregator.TotalAmount);
         }
 
         public static void Main(string[] args)
         {
-            LoadData();
-            OutputAggregateData();
+            PrepareData();
+            OutputStats();
         }
     }
 }
