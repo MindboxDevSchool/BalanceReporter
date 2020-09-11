@@ -39,11 +39,6 @@ namespace BalanceReporter
             return count;
         }
 
-        public static void SortTransactionData()
-        {
-            Transactions.Sort();
-        }
-
         public static IEnumerable<TransactionData> AggregateAmountData(IEnumerable<TransactionData> transactionData,
             TransactionGrouper grouper, TransactionAggregator aggregator)
         {
@@ -72,7 +67,7 @@ namespace BalanceReporter
         {
             string filepath = InputFilepath(DataDirectoryPath);
             LoadTransactionData(filepath);
-            SortTransactionData();
+            Transactions.Sort();
         }
 
         public static void OutputStats()
