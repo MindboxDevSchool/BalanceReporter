@@ -9,7 +9,7 @@ namespace BalanceReporter.model
         public static readonly TransactionAggregator TotalAmount = new TransactionAggregator()
         {
             Label = "total amount",
-            AggregateFunction = (txGroup, stats) =>
+            AggregateFunction = (stats, txGroup) =>
             {
                 stats.Amount = txGroup.Sum(tx => tx.Amount);
                 return stats;
@@ -19,7 +19,7 @@ namespace BalanceReporter.model
         public static readonly TransactionAggregator AverageAmount = new TransactionAggregator()
         {
             Label = "average amount",
-            AggregateFunction = (txGroup, stats) =>
+            AggregateFunction = (stats, txGroup) =>
             {
                 stats.Amount = txGroup.Average(tx => tx.Amount);
                 return stats;
@@ -29,7 +29,7 @@ namespace BalanceReporter.model
         public static readonly TransactionAggregator MaximumAmount = new TransactionAggregator()
         {
             Label = "maximum amount",
-            AggregateFunction = (txGroup, stats) =>
+            AggregateFunction = (stats, txGroup) =>
             {
                 stats.Amount = txGroup.Max(tx => tx.Amount);
                 return stats;
@@ -38,7 +38,7 @@ namespace BalanceReporter.model
 
         public string Label { get; private set; }
 
-        public Func<IEnumerable<TransactionData>, TransactionData, TransactionData> AggregateFunction
+        public Func<TransactionData, IEnumerable<TransactionData>, TransactionData> AggregateFunction
         {
             get;
             private set;

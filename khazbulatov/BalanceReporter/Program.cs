@@ -48,9 +48,7 @@ namespace BalanceReporter
             TransactionGrouper transactionGrouper, TransactionAggregator transactionAggregator)
         {
             return transactionData
-                .GroupBy(transactionGrouper.KeyFunction)
-                .Select(txGroup =>
-                    transactionAggregator.AggregateFunction(txGroup, txGroup.Key));
+                .GroupBy(transactionGrouper.KeyFunction, transactionAggregator.AggregateFunction);
         }
 
         public static void OutputTransactions()
