@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace BalanceReporter.Tests
 {
-    public class Tests
+    public class ProgramTests
     {
         List<Transaction> exampleTransactions = new List<Transaction>()
         {
