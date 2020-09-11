@@ -5,7 +5,7 @@
     <projectFile>BankTransactionsUnitTesting/BankTransactionsUnitTesting.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2e950678-d492-4641-95cf-c6a644558145" name="Default Changelist" comment="">
+    <list default="true" id="2e950678-d492-4641-95cf-c6a644558145" name="Default Changelist" comment="Stepenko Balance Report homework loadings">
       <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -14,6 +14,24 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="REMOTE">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="origin/stepenkoBalanceReport" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
@@ -104,8 +122,16 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1599837060257</updated>
-      <workItem from="1599837138815" duration="15571000" />
+      <workItem from="1599837138815" duration="16011000" />
     </task>
+    <task id="LOCAL-00001" summary="Stepenko Balance Report homework loadings">
+      <created>1599854240389</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1599854240389</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -115,12 +141,18 @@
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="Stepenko Balance Report homework loadings" />
+    <option name="LAST_COMMIT_MESSAGE" value="Stepenko Balance Report homework loadings" />
   </component>
   <component name="WindowStateProjectService">
     <state x="233" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1599846786980">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="233" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680@0.0.1280.680" timestamp="1599846786980" />
+    <state x="389" y="207" key="Github.CreatePullRequestDialog" timestamp="1599854105154">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="389" y="207" key="Github.CreatePullRequestDialog/0.0.1280.680@0.0.1280.680" timestamp="1599854105154" />
     <state width="1237" height="2" key="GridCell.Tab.0.bottom" timestamp="1599850059766">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
