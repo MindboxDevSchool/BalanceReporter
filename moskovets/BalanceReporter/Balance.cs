@@ -21,6 +21,13 @@ namespace BalanceReporter
             [Index(0)] public DateTime Date { get; set; }
             [Index(1)] public string Receiver { get; set; }
             [Index(2)] public double Total { get; set; }
+
+            public Transaction(DateTime date, string receiver, double total)
+            {
+                Date = date;
+                Receiver = receiver;
+                Total = total;
+            }
         }
 
         private List<Transaction> _transactions;
@@ -35,6 +42,11 @@ namespace BalanceReporter
             return transaction.Total < 0;
         }
 
+        public void SetTransactionsList(List<Transaction> transactions)
+        {
+            _transactions = transactions;
+        }
+        
         public void ReadTransactionsFromCsvFile(string filename)
         {
             using (StreamReader streamReader = new StreamReader(filename))
@@ -77,6 +89,10 @@ namespace BalanceReporter
                     Name = receiver.Key,
                     Sum = receiver.Sum(transaction => Math.Abs(transaction.Total))
                 });
+            if (!receiversIncomes.Any())
+            {
+                return ""; // todo exception
+            }
             var maxIncome = receiversIncomes.Max(x => x.Sum);
             var result = receiversIncomes.First(x => x.Sum == maxIncome);
             return result.Name;
