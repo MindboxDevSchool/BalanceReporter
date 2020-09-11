@@ -45,10 +45,10 @@ namespace BalanceReporter
         }
 
         public static IEnumerable<TransactionData> AggregateAmountData(IEnumerable<TransactionData> transactionData,
-            TransactionGrouper transactionGrouper, TransactionAggregator transactionAggregator)
+            TransactionGrouper grouper, TransactionAggregator aggregator)
         {
             return transactionData
-                .GroupBy(transactionGrouper.KeyFunction, transactionAggregator.AggregateFunction);
+                .GroupBy(grouper.KeyFunction, aggregator.AggregateFunction);
         }
 
         public static void OutputTransactions()
