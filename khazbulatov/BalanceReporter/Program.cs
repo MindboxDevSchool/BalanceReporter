@@ -64,7 +64,7 @@ namespace BalanceReporter
             IEnumerable<TransactionData> amountStats = AggregateAmountData(Transactions, grouper, aggregator);
             foreach (TransactionData stats in amountStats)
             {
-                Console.WriteLine($"- {grouper.Label} {aggregator.Label} {stats}");
+                Console.WriteLine($"- {grouper} {aggregator} {stats}");
             }
         }
 

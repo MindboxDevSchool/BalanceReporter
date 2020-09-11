@@ -33,8 +33,10 @@ namespace BalanceReporter.model
                 IsIncoming = tx.IsIncoming
             }
         };
-
-        public string Label { get; private set; }
+        
+        private string Label { get; set; }
+        
+        public override string ToString() => Label;
         public Func<TransactionData, TransactionData> KeyFunction { get; private set; }
     }
 }

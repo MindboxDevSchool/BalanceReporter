@@ -36,8 +36,9 @@ namespace BalanceReporter.model
             }
         };
 
-        public string Label { get; private set; }
-
+        private string Label { get; set; }
+        
+        public override string ToString() => Label;
         public Func<TransactionData, IEnumerable<TransactionData>, TransactionData> AggregateFunction
         {
             get;
