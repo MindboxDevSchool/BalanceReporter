@@ -21,8 +21,8 @@ jobs:
 
         - name: Build
           run: dotnet build --configuration Release
-          working-directory: ./BalanceReporter/zenin
+          working-directory: ./zenin/BalanceReporter
 
         - name: Run unit tests
           run: dotnet test --configuration Release
-          working-directory: ./BalanceReporter/zenin
+          working-directory: ./zenin/BalanceReporter
